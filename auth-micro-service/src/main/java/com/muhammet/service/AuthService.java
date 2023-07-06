@@ -4,6 +4,7 @@ import com.muhammet.dto.request.DoLoginRequestDto;
 import com.muhammet.dto.request.DoRegisterRequestDto;
 import com.muhammet.exceptions.AuthException;
 import com.muhammet.exceptions.ErrorType;
+import com.muhammet.mapper.IAuthMapper;
 import com.muhammet.repository.IAuthRepository;
 import com.muhammet.repository.entity.Auth;
 import com.muhammet.utility.ServiceManager;
@@ -34,11 +35,12 @@ public class AuthService extends ServiceManager<Auth,Long> {
                .ifPresent(auth -> {
                    throw new AuthException(ErrorType.REGISTER_KULLANICIADI_KAYITLI);
                });
-       Auth auth = Auth.builder()
-               .email(dto.getEmail())
-               .username(dto.getUsername())
-               .password(dto.getPassword())
-               .build();
+//       Auth auth = Auth.builder()
+//               .email(dto.getEmail())
+//               .username(dto.getUsername())
+//               .password(dto.getPassword())
+//               .build();
+        Auth auth = IAuthMapper.INSTANCE.authFromDto(dto);
        repository.save(auth);
        return true;
     }
