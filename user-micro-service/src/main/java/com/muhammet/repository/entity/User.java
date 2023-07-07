@@ -20,6 +20,7 @@ public class User {
      * Auth kısmında oluşturulan kaydın id bilgisi burada tutulmalıdır.
      */
     Long authid;
+    String username;
     String name;
     String surname;
     String email;

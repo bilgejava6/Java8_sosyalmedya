@@ -1,5 +1,7 @@
 package com.muhammet.controller;
 
+import com.muhammet.dto.request.UserSaveRequestDto;
+import com.muhammet.dto.response.UserSaveResponseDto;
 import com.muhammet.repository.entity.User;
 import com.muhammet.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +18,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(SAVE)
-    public ResponseEntity<User> save(@RequestBody User user){
-        return ResponseEntity.ok(userService.save(user));
+    public ResponseEntity<UserSaveResponseDto> save(@RequestBody UserSaveRequestDto dto){
+        userService.save(dto);
+        return ResponseEntity.ok(UserSaveResponseDto.builder()
+                .status(200)
+                .result("Başarılı bir şekilde kayıt edildi.")
+                .build());
     }
 
     @GetMapping(FINDALL)
