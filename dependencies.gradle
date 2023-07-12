@@ -3,6 +3,7 @@ ext{
 
     versions = [
             springBoot          : "3.1.1",
+            springCloud         : "4.0.3",
             lombok              : "1.18.26",
             swaggerui           : "2.1.0",
             postgresql          : "42.6.0",
@@ -14,6 +15,11 @@ ext{
            springBootWeb       : "org.springframework.boot:spring-boot-starter-web:${versions.springBoot}",
            springDataJpa       : "org.springframework.boot:spring-boot-starter-data-jpa:${versions.springBoot}",
            springDataMongodb   : "org.springframework.boot:spring-boot-starter-data-mongodb:${versions.springBoot}",
+           // Spring Cloud Bağımlılıkları
+           springCloudFeign    : "org.springframework.cloud:spring-cloud-starter-openfeign:${versions.springCloud}",
+           springCloudConfigServer  : "org.springframework.cloud:spring-cloud-config-server:${versions.springCloud}",
+           springCloudConfigClient  : "org.springframework.cloud:spring-cloud-config-client:${versions.springCloud}",
+           springCloudConfig        : "org.springframework.cloud:spring-cloud-starter-config:${versions.springCloud}",
            lombok              : "org.projectlombok:lombok:${versions.lombok}",
            swaggerui           : "org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.swaggerui}",
            postgresql          : "org.postgresql:postgresql:${versions.postgresql}",

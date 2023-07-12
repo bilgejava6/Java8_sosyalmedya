@@ -4,7 +4,5 @@ buildscript {
     }
 }
 dependencies {
-    implementation libs.springDataMongodb
-    implementation libs.springCloudConfigClient
-    implementation libs.springCloudConfig
+    implementation libs.springCloudConfigServer
 }

@@ -2,12 +2,15 @@ package com.muhammet.service;
 
 import com.muhammet.dto.request.DoLoginRequestDto;
 import com.muhammet.dto.request.DoRegisterRequestDto;
+import com.muhammet.dto.request.UserSaveRequestDto;
 import com.muhammet.exceptions.AuthException;
 import com.muhammet.exceptions.ErrorType;
+import com.muhammet.manager.IUserManager;
 import com.muhammet.mapper.IAuthMapper;
 import com.muhammet.repository.IAuthRepository;
 import com.muhammet.repository.entity.Auth;
 import com.muhammet.utility.ServiceManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,9 +18,13 @@ import java.util.Optional;
 @Service
 public class AuthService extends ServiceManager<Auth,Long> {
     private final IAuthRepository repository;
-    public AuthService(IAuthRepository repository) {
+    private final IUserManager userManager;
+
+
+    public AuthService(IAuthRepository repository,IUserManager userManager) {
         super(repository);
         this.repository = repository;
+        this.userManager = userManager;
     }
     /**
      * Register a new user
@@ -42,6 +49,14 @@ public class AuthService extends ServiceManager<Auth,Long> {
 //               .build();
         Auth auth = IAuthMapper.INSTANCE.authFromDto(dto);
        repository.save(auth);
+        /**
+         * Auth seervis kullanıcıyı kayıt ettikten sonra user microservisine kullanıcı prıofili oluşturulmamk üzere bilgi gönderir.
+         */
+       userManager.save(UserSaveRequestDto.builder()
+                       .authid(auth.getId())
+                       .email(dto.getEmail())
+                       .username(dto.getUsername())
+               .build());
        return true;
     }
     public Boolean login(DoLoginRequestDto dto){
