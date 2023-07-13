@@ -28,3 +28,12 @@
     * ilgili db ye geçtikten sonra;
     - db.createUser({user:"bilgeadmin",pwd:"bilge33**",roles:["readWrite","dbAdmin"]})
     * artık bu kullanıcı ile bu veritanbanına balanabilir ve işlem yapabiliriz.
+
+# RabbitMQ için işlemler
+
+    - Docker' a kurulum için gerekli yapılandımaları yapalım. Önemli mutlaka postlar eklenmeli (5672 ve 15672)
+    docker run -d --name bilgejava8-rabbit -e RABBITMQ_DEFAULT_USER=bilgejava8 -e RABBITMQ_DEFAULT_PASS=bilgeadmin* -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+    - RabbitMQ yönetim arayüzüne erişmek için aşağıdaki linki kullanabilirsiniz.
+    http://localhost:15672/
+    - RabbitMQ' ya java içinden bağlanmak için aşağıdaki linki kullanabilirsiniz.
+    localhost:5672
