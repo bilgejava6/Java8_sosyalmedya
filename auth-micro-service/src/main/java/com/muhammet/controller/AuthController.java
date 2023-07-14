@@ -4,14 +4,13 @@ import com.muhammet.dto.request.DoLoginRequestDto;
 import com.muhammet.dto.request.DoRegisterRequestDto;
 import com.muhammet.dto.response.DoLoginResponseDto;
 import com.muhammet.dto.response.DoRegisterResponseDto;
+import com.muhammet.rabbitmq.model.CreateProfile;
+import com.muhammet.rabbitmq.producer.CreateProfileProducer;
 import com.muhammet.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import static com.muhammet.constants.RestApis.*;
@@ -21,6 +20,18 @@ import static com.muhammet.constants.RestApis.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final CreateProfileProducer createProfileProducer;
+    @GetMapping("/testrabbit")
+    public ResponseEntity<Void> testRabbitSendMessage(String username,String email,Long authid){
+        createProfileProducer.sendCreateProfileMessage(
+                CreateProfile.builder()
+                        .authid(authid)
+                        .email(email)
+                        .username(username)
+                        .build()
+        );
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping(LOGIN)
     public ResponseEntity<DoLoginResponseDto> doLogin(@RequestBody @Valid DoLoginRequestDto dto){

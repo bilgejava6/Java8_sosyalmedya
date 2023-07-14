@@ -7,6 +7,8 @@ import com.muhammet.exceptions.AuthException;
 import com.muhammet.exceptions.ErrorType;
 import com.muhammet.manager.IUserManager;
 import com.muhammet.mapper.IAuthMapper;
+import com.muhammet.rabbitmq.model.CreateProfile;
+import com.muhammet.rabbitmq.producer.CreateProfileProducer;
 import com.muhammet.repository.IAuthRepository;
 import com.muhammet.repository.entity.Auth;
 import com.muhammet.utility.ServiceManager;
@@ -20,11 +22,13 @@ public class AuthService extends ServiceManager<Auth,Long> {
     private final IAuthRepository repository;
     private final IUserManager userManager;
 
+    private final CreateProfileProducer createProfileProducer;
 
-    public AuthService(IAuthRepository repository,IUserManager userManager) {
+    public AuthService(IAuthRepository repository,IUserManager userManager, CreateProfileProducer createProfileProducer) {
         super(repository);
         this.repository = repository;
         this.userManager = userManager;
+        this.createProfileProducer = createProfileProducer;
     }
     /**
      * Register a new user
@@ -51,12 +55,23 @@ public class AuthService extends ServiceManager<Auth,Long> {
        repository.save(auth);
         /**
          * Auth seervis kullanıcıyı kayıt ettikten sonra user microservisine kullanıcı prıofili oluşturulmamk üzere bilgi gönderir.
+         * DİKKAT!!!!
+         * auth servis ile user servis arasonda tutarlılık gerektiren bir bağlantı vardır. bu nedenle
+         * auth bir veriyi kayıt ettiğinde mutlaka user serviste de oluşmalıdır. İşte bu nedenle
+         * tutarlılığı korumak adına P2P FeignClient kullanmak yerine RabbitMQ kullanılmıştır.
          */
-       userManager.save(UserSaveRequestDto.builder()
-                       .authid(auth.getId())
-                       .email(dto.getEmail())
-                       .username(dto.getUsername())
-               .build());
+//       userManager.save(UserSaveRequestDto.builder()
+//                       .authid(auth.getId())
+//                       .email(dto.getEmail())
+//                       .username(dto.getUsername())
+//               .build());
+        createProfileProducer.sendCreateProfileMessage(
+                CreateProfile.builder()
+                        .authid(auth.getId())
+                        .username(dto.getUsername())
+                        .email(dto.getEmail())
+                        .build()
+        );
        return true;
     }
     public Boolean login(DoLoginRequestDto dto){
