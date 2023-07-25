@@ -21,6 +21,12 @@ public class AuthController {
 
     private final AuthService authService;
     private final CreateProfileProducer createProfileProducer;
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> getHello(){
+        return ResponseEntity.ok("Merhaba bu servis AUTH servisidir.");
+    }
+
     @GetMapping("/testrabbit")
     public ResponseEntity<Void> testRabbitSendMessage(String username,String email,Long authid){
         createProfileProducer.sendCreateProfileMessage(
@@ -34,6 +40,7 @@ public class AuthController {
     }
 
     @PostMapping(LOGIN)
+    @CrossOrigin("*")
     public ResponseEntity<DoLoginResponseDto> doLogin(@RequestBody @Valid DoLoginRequestDto dto){
        Boolean isLogin = authService.login(dto);
        if(isLogin)
@@ -50,6 +57,7 @@ public class AuthController {
     }
 
     @PostMapping(REGISTER)
+    @CrossOrigin("*")
     public ResponseEntity<DoRegisterResponseDto> doRegister(@RequestBody @Valid DoRegisterRequestDto dto){
         Boolean isRegister = authService.register(dto);
         if(isRegister)

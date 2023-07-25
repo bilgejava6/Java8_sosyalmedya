@@ -17,7 +17,14 @@ import static com.muhammet.constants.RestApis.*;
 public class UserController {
     private final UserService userService;
 
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> getHello(){
+        return ResponseEntity.ok("Merhaba bu servis USER servisidir.");
+    }
+
     @PostMapping(SAVE)
+    @CrossOrigin("*")
     public ResponseEntity<UserSaveResponseDto> save(@RequestBody UserSaveRequestDto dto){
         userService.save(dto);
         return ResponseEntity.ok(UserSaveResponseDto.builder()
@@ -27,6 +34,7 @@ public class UserController {
     }
 
     @GetMapping(FINDALL)
+    @CrossOrigin("*")
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAll());
     }
