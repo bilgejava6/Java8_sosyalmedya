@@ -11,6 +11,7 @@ import com.muhammet.rabbitmq.model.CreateProfile;
 import com.muhammet.rabbitmq.producer.CreateProfileProducer;
 import com.muhammet.repository.IAuthRepository;
 import com.muhammet.repository.entity.Auth;
+import com.muhammet.utility.JwtTokenManager;
 import com.muhammet.utility.ServiceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,17 @@ import java.util.Optional;
 public class AuthService extends ServiceManager<Auth,Long> {
     private final IAuthRepository repository;
     private final IUserManager userManager;
-
+    private final JwtTokenManager jwtTokenManager;
     private final CreateProfileProducer createProfileProducer;
 
-    public AuthService(IAuthRepository repository,IUserManager userManager, CreateProfileProducer createProfileProducer) {
+    public AuthService(IAuthRepository repository,IUserManager userManager,
+                       CreateProfileProducer createProfileProducer,
+                       JwtTokenManager jwtTokenManager) {
         super(repository);
         this.repository = repository;
         this.userManager = userManager;
         this.createProfileProducer = createProfileProducer;
+        this.jwtTokenManager = jwtTokenManager;
     }
     /**
      * Register a new user
@@ -74,7 +78,7 @@ public class AuthService extends ServiceManager<Auth,Long> {
         );
        return true;
     }
-    public Boolean login(DoLoginRequestDto dto){
+    public String login(DoLoginRequestDto dto){
       Optional<Auth> auth = repository.findOptionalByUsernameAndPassword(dto.getUsername(),dto.getPassword());
         /**
          * DİKKAT!!! burada iki yolumuz var;
@@ -85,7 +89,9 @@ public class AuthService extends ServiceManager<Auth,Long> {
          * 2- Auth bilgisini sorgulayarak kullabıcı yok ise ya da bilgileri yanlış ise exception fırlatabiliriz.
          */
       if(auth.isEmpty()) throw new AuthException(ErrorType.DOLOGIN_INVALID_USERNAME_PASSWORD);
-      return true;
+      Optional<String> token = jwtTokenManager.createToken(auth.get().getId());
+      if(token.isEmpty()) throw new AuthException(ErrorType.BAD_REQUEST_ERROR);
+      return token.get();
     }
 
     public Optional<Auth> loginAlternatif(DoLoginRequestDto dto){

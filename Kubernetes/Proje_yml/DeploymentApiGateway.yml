@@ -1,19 +1,19 @@
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
-  name: deployment-auth
+  name: deployment-gateway
 spec:
   selector:
     matchLabels:
-      app: deployment-pod-label-auth
+      app: deployment-pod-label-gateway
   template:
     metadata:
       labels:
-        app: deployment-pod-label-auth      
+        app: deployment-pod-label-gateway      
     spec:
       containers: 
-      - name: auth 
-        image: javaboost2/java8authservice:v01
+      - name: gateway 
+        image: javaboost2/java8gatewayservice:v01
         resources:
           requests:
             cpu: "300m"
@@ -22,7 +22,7 @@ spec:
             cpu: "500m"
             memory: "2048Mi"
         ports: 
-        - containerPort: 9090
+        - containerPort: 80
         env:
           - name: CONFIG_SERVER_URL
             value: http://192.168.131.69:8888

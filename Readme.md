@@ -54,5 +54,6 @@
         docker build -t javaboost2/java8configservergit:v01 .
         docker build -t javaboost2/java8authservice:v01 .
         docker build -t javaboost2/java8userservice:v01 .
+        docker build -t javaboost2/java8gatewayservice:v01 .
 
     

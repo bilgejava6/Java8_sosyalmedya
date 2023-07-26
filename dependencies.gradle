@@ -10,7 +10,8 @@ ext{
             swaggerui           : "2.1.0",
             postgresql          : "42.6.0",
             hibernateValidator  : "8.0.0.Final",
-            mapstruct           : "1.5.5.Final"
+            mapstruct           : "1.5.5.Final",
+            auth0               : "4.4.0"
     ]
 
     libs = [
@@ -36,7 +37,8 @@ ext{
            postgresql          : "org.postgresql:postgresql:${versions.postgresql}",
            hibernateValidator  : "org.hibernate.validator:hibernate-validator:${versions.hibernateValidator}",
            mapstruct           : "org.mapstruct:mapstruct:${versions.mapstruct}",
-           mapstructProcessor  : "org.mapstruct:mapstruct-processor:${versions.mapstruct}"
+           mapstructProcessor  : "org.mapstruct:mapstruct-processor:${versions.mapstruct}",
+           auth0               : "com.auth0:java-jwt:${versions.auth0}"
 
 
     ]

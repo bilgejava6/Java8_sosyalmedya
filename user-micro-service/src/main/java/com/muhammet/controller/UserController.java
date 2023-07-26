@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping(FINDALL)
     @CrossOrigin("*")
-    public ResponseEntity<List<User>> findAll(){
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<List<User>> findAll(String token){
+        return ResponseEntity.ok(userService.findAll(token));
     }
 }

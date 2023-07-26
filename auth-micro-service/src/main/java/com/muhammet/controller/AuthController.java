@@ -42,18 +42,12 @@ public class AuthController {
     @PostMapping(LOGIN)
     @CrossOrigin("*")
     public ResponseEntity<DoLoginResponseDto> doLogin(@RequestBody @Valid DoLoginRequestDto dto){
-       Boolean isLogin = authService.login(dto);
-       if(isLogin)
-           return ResponseEntity.ok(DoLoginResponseDto.builder()
+       String token = authService.login(dto);
+       return ResponseEntity.ok(DoLoginResponseDto.builder()
                            .status(200)
                            .result("Giriş İşlemi Başarılı")
+                           .token(token)
                    .build());
-       return ResponseEntity.badRequest().body(
-               DoLoginResponseDto.builder()
-                       .status(400)
-                       .result("Giriş İşlemi Başarısız oldu. Lütfen bilgilerinizi kontrol ederek tekrar deneyiniz.")
-                       .build()
-       );
     }
 
     @PostMapping(REGISTER)
