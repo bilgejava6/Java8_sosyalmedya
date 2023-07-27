@@ -6,6 +6,7 @@ import com.muhammet.repository.entity.User;
 import com.muhammet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,12 @@ import static com.muhammet.constants.RestApis.*;
 @RequestMapping(USER)
 public class UserController {
     private final UserService userService;
+
+    @GetMapping("/merhaba")
+    @PreAuthorize("hasAnyAuthority('USER','AHMET_DAYI')")
+    public ResponseEntity<String> getMerhaba(){
+        return ResponseEntity.ok("Merhaba bu USER Role ile girilen bir method dur");
+    }
 
 
     @GetMapping("/hello")
