@@ -1,4 +1,7 @@
 server:
+  servlet:
+    session:
+      timeout: 120
   port: 9092
 
 spring:
@@ -26,3 +29,8 @@ spring:
       database: sosyalmedyadb
       username: bilgeadmin
       password: bilge33**
+
+#myapplication:
+#  redis:
+#    host: ${REDIS_HOST}
+#    port: ${REDIS_PORT}

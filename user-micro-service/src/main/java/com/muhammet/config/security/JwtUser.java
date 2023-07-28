@@ -5,6 +5,7 @@ import com.muhammet.exceptions.UserException;
 import com.muhammet.repository.IUserRepository;
 import com.muhammet.repository.IUserRoleRepository;
 import com.muhammet.repository.entity.User;
+import com.muhammet.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +23,7 @@ public class JwtUser implements UserDetailsService {
     @Autowired
     IUserRepository userRepository;
     @Autowired
-    IUserRoleRepository userRoleRepository;
+    UserRoleService userRoleService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,10 +34,11 @@ public class JwtUser implements UserDetailsService {
         if(user.isEmpty()) throw new UserException(ErrorType.INVALID_USER);
         // TODO: kullanıcıya ait rolleri userrole tablosundan çekeceğiz.
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ADMIN"));
-        authorities.add(new SimpleGrantedAuthority("USER"));
-        authorities.add(new SimpleGrantedAuthority("AHMET_AMCA"));
-        authorities.add(new SimpleGrantedAuthority("DELI_MISIN"));
+        userRoleService.findAllByAuthid(authId).forEach(role->{
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+
+
         return org.springframework.security.core.userdetails.User
                 .builder()
                 .username(user.get().getUsername())

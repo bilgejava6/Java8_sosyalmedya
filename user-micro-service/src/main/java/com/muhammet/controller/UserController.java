@@ -24,6 +24,11 @@ public class UserController {
         return ResponseEntity.ok("Merhaba bu USER Role ile girilen bir method dur");
     }
 
+    @GetMapping("/upperCaseName")
+    public ResponseEntity<String> getUppserCaseName(String ad){
+        return ResponseEntity.ok(userService.toUpper(ad));
+    }
+
 
     @GetMapping("/hello")
     public ResponseEntity<String> getHello(){

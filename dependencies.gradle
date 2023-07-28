@@ -19,6 +19,7 @@ ext{
            springBootSecurity  : "org.springframework.boot:spring-boot-starter-security:${versions.springBoot}",
            springDataJpa       : "org.springframework.boot:spring-boot-starter-data-jpa:${versions.springBoot}",
            springDataMongodb   : "org.springframework.boot:spring-boot-starter-data-mongodb:${versions.springBoot}",
+           springDataRedis     : "org.springframework.boot:spring-boot-starter-data-redis:${versions.springBoot}",
 
            // Spring Cloud Bağımlılıkları
            springCloudFeign    : "org.springframework.cloud:spring-cloud-starter-openfeign:${versions.springCloud}",

@@ -9,4 +9,5 @@ dependencies {
     implementation libs.springCloudConfig
     implementation libs.springBootAmqp
     implementation libs.springBootSecurity
+    implementation libs.springDataRedis
 }

@@ -15,7 +15,7 @@ public class JwtTokenManager {
      * 1- Kullanıcı kendini doğrulamalı, username ve password ile. doLogin
      * 2- doğrulanmış kişinin kimlik bilgileri ile ona yeni bir JWT oluşturmalıyız.
      */
-    private final long exDate = 1000L*20; // 20 saniye
+    private final long exDate = 1000L*60; // 20 saniye
     private final String sifreAnahtari = "bşfb546-5436*-4--56ı987845ygyhı45*096845096";
     public Optional<String> createToken(Long id){
         try{
